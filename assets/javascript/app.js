@@ -26,7 +26,7 @@ $("#train-btn").on("click", function() {
   var trainStart = moment($("#first-train").val().trim(), "DD/MM/YY").format("X");
   var trainFreq = $("#frequency").val().trim();
 
-  // Creates local "temporary" object for holding employee data
+  // Creates local "temporary" object for holding train data
   var newTrain = {
     trainName: trainName,
     destination: trainDest,
@@ -34,7 +34,7 @@ $("#train-btn").on("click", function() {
     frequency: trainFreq
   };
 
-  // Uploads employee data to the database
+  // Uploads train data to the database
   database.ref().push(newTrain);
 
   // Logs everything to console
@@ -44,7 +44,7 @@ $("#train-btn").on("click", function() {
   console.log(newTrain.frequency);
 
   // Alert
-  alert("Employee successfully added");
+  alert("Train time successfully added");
 
   // Clears all of the text-boxes
   $("#train-name").val("");
@@ -67,23 +67,19 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   var trainStart = childSnapshot.val().start;
   var freqSnap = childSnapshot.val().rate;
 
-  // Employee Info
+  // Train Info
   console.log(nameSnap);
   console.log(destSnap);
   console.log(trainStart);
   console.log(freqSnap);
 
-  // Prettify the employee start
+  // Prettify the Train start time
   var trainStartPretty = moment.unix(trainStart).format("HH:MM");
 
   // Calculate the months worked using hardcore math
   // To calculate the months worked
-  // var empMonths = moment().diff(moment.unix(trainStart, "X"), "months");
-  // console.log(empMonths);
-
-  // Calculate the total billed rate
-  // var empBilled = empMonths * freqSnap;
-  // console.log(empBilled);
+  var trainMinutes = moment().diff(moment.unix(trainStart, "X"), "months");
+  console.log(trainMinutes);
 
   // Add each train's data into the table
   $("#train-table > tbody").append("<tr><td>" + nameSnap + "</td><td>" + destSnap + "</td><td>" +
