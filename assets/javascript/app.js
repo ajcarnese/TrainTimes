@@ -15,24 +15,25 @@
   };
   firebase.initializeApp(config);
 
+	// referencing the database
 	var database = firebase.database();
 	console.log(database);
 
 // 2. Button for adding Trains
 $("#train-btn").on("click", function(event) {
-  event.preventDefault();
+  
 
   // Grabs user input
   var trainName = $("#train-name").val().trim();
   var trainDest = $("#destination").val().trim();
-  var trainStart = moment($("#first-train").val().trim(), "HH:mm").format("XX:XX");
+  var trainStart = $("#first-train").val().trim();
   var trainFreq = $("#frequency").val().trim();
 
   // Creates local "temporary" object for holding train data
   var newTrain = {
     "name": trainName,
     "destination": trainDest,
-    "startTime": trainStart,
+    "start": trainStart,
     "frequency": trainFreq
   };
   
@@ -44,7 +45,7 @@ $("#train-btn").on("click", function(event) {
   // Logs everything to console
   console.log(newTrain.name);
   console.log(newTrain.destination);
-  console.log(newTrain.startTime);
+  console.log(newTrain.start);
   console.log(newTrain.frequency);
 
   // Alert
@@ -57,19 +58,19 @@ $("#train-btn").on("click", function(event) {
   $("#frequency").val("");
 
   // Prevents moving to new page
-  return false;
+  event.preventDefault();
 });
 
 // 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry
-database.ref().on("child_added", function(childSnapshot) {
+database.ref().on("value", function(childSnapshot) {
 
   console.log(childSnapshot.val());
 
   // Store everything into a variable.
   var nameSnap = childSnapshot.val().name;
-  var destSnap = childSnapshot.val().role;
+  var destSnap = childSnapshot.val().destination;
   var trainStart = childSnapshot.val().start;
-  var freqSnap = childSnapshot.val().rate;
+  var freqSnap = childSnapshot.val().frequency;
 
   // Train Info
   console.log(nameSnap);
@@ -81,12 +82,15 @@ database.ref().on("child_added", function(childSnapshot) {
   var trainStartPretty = moment(nextTrain).format("hh:mm");
 
   // Calculate the Minutes Away using hardcore math
-  var trainMinutes = moment().diff(moment.unix(trainStart, "X"), "minutes");
+  var trainMinutes = moment().diff(moment(trainStart, "mm"), "minutes");
   console.log(trainMinutes);
 
   // Add each train's data into the table
   $("#train-table > tbody").append("<tr><td>" + nameSnap + "</td><td>" + destSnap + "</td><td>" +
   trainStartPretty + "</td><td>" + freqSnap + "</td></tr>");
-});
+}), function(errorObject) {
+	console.log("You didn't choo choo choose correctly!" + errorObject.code);
+
+};
 
 
