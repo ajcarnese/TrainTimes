@@ -1,7 +1,7 @@
 // Steps:
 // 
-// 1. initialize Firebase
-// 2. create a way to retrieve train information from the database
+// 1. Initialize Firebase
+// 2. Create a way to retrieve train information from the database
 // 3. Create a way to calculate the minutes (moment.js?)
 // 4. Calculate estimated arrival times
 
@@ -15,30 +15,34 @@
   };
   firebase.initializeApp(config);
 
-var database = firebase.database();
+	var database = firebase.database();
+	console.log(database);
 
 // 2. Button for adding Trains
-$("#train-btn").on("click", function() {
+$("#train-btn").on("click", function(event) {
+  event.preventDefault();
 
   // Grabs user input
   var trainName = $("#train-name").val().trim();
   var trainDest = $("#destination").val().trim();
-  var trainStart = moment($("#first-train").val().trim(), "DD/MM/YY").format("X");
+  var trainStart = moment($("#first-train").val().trim(), "HH:mm").format("XX:XX");
   var trainFreq = $("#frequency").val().trim();
 
   // Creates local "temporary" object for holding train data
   var newTrain = {
-    trainName: trainName,
-    destination: trainDest,
-    startTime: trainStart,
-    frequency: trainFreq
+    "name": trainName,
+    "destination": trainDest,
+    "startTime": trainStart,
+    "frequency": trainFreq
   };
-
+  
+  console.log(newTrain);
+  
   // Uploads train data to the database
   database.ref().push(newTrain);
 
   // Logs everything to console
-  console.log(newTrain.trainName);
+  console.log(newTrain.name);
   console.log(newTrain.destination);
   console.log(newTrain.startTime);
   console.log(newTrain.frequency);
@@ -57,7 +61,7 @@ $("#train-btn").on("click", function() {
 });
 
 // 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry
-database.ref().on("child_added", function(childSnapshot, prevChildKey) {
+database.ref().on("child_added", function(childSnapshot) {
 
   console.log(childSnapshot.val());
 
@@ -74,11 +78,10 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   console.log(freqSnap);
 
   // Prettify the Train start time
-  var trainStartPretty = moment.unix(trainStart).format("HH:MM");
+  var trainStartPretty = moment(nextTrain).format("hh:mm");
 
-  // Calculate the months worked using hardcore math
-  // To calculate the months worked
-  var trainMinutes = moment().diff(moment.unix(trainStart, "X"), "months");
+  // Calculate the Minutes Away using hardcore math
+  var trainMinutes = moment().diff(moment.unix(trainStart, "X"), "minutes");
   console.log(trainMinutes);
 
   // Add each train's data into the table
@@ -86,10 +89,4 @@ database.ref().on("child_added", function(childSnapshot, prevChildKey) {
   trainStartPretty + "</td><td>" + freqSnap + "</td></tr>");
 });
 
-// Example Time Math
-// -----------------------------------------------------------------------------
-// Assume Employee start date of January 1, 2015
-// Assume current date is March 1, 2016
 
-// We know that this is 15 months.
-// Now we will create code in moment.js to confirm that any attempt we use mets this test case
