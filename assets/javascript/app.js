@@ -22,6 +22,8 @@
 // 2. Button for adding Trains
 $("#train-btn").on("click", function(event) {
   
+  // Prevents moving to new page
+  event.preventDefault();
 
   // Grabs user input
   var trainName = $("#train-name").val().trim();
@@ -30,17 +32,22 @@ $("#train-btn").on("click", function(event) {
   var trainFreq = $("#frequency").val().trim();
 
   // Creates local "temporary" object for holding train data
-  var newTrain = {
-    "name": trainName,
-    "destination": trainDest,
-    "start": trainStart,
-    "frequency": trainFreq
-  };
+  // var newTrain = {
+  //   "name": trainName,
+  //   "destination": trainDest,
+  //   "start": trainStart,
+  //   "frequency": trainFreq
+  // };
   
   console.log(newTrain);
   
   // Uploads train data to the database
-  database.ref().push(newTrain);
+  database.ref().push({
+    name: trainName,
+    destination: trainDest,
+    start: trainStart,
+    frequency: trainFreq
+  });
 
   // Logs everything to console
   console.log(newTrain.name);
@@ -57,8 +64,6 @@ $("#train-btn").on("click", function(event) {
   $("#first-train").val("");
   $("#frequency").val("");
 
-  // Prevents moving to new page
-  event.preventDefault();
 });
 
 // 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry

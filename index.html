@@ -8,9 +8,15 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 
+    <!-- Font libraries -->
+    <link href="https://fonts.googleapis.com/css?family=Limelight|Racing+Sans+One" rel="stylesheet">
+
     <!-- Bootstrap CDN-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- My CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
     <!-- Firebase Reference -->
     <script src="https://www.gstatic.com/firebasejs/3.6.5/firebase.js"></script>
@@ -29,7 +35,7 @@
       <br>
 
       <!-- Jumbotron Title -->
-      <div class="jumbotron">
+      <div class="jumbotron" id="banner">
         <h1 class="text-center">Got a Ticket to Ride?</h1>
         <h3 class="text-center">Time to take the "A" Train!</h3>
       </div>
@@ -39,7 +45,7 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="panel panel-default">
-          	<div class="panel-heading">
+          	<div class="panel-heading" id="heading">
               <h3 class="panel-title"><strong>Come on, Ride the Train!</strong></h3>
             </div>
               <div class="panel-body">
@@ -66,13 +72,13 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="panel panel-default">
-            <div class="panel-heading">
+            <div class="panel-heading" id="heading">
               <h3 class="panel-title"><strong>Look up your next ticket out of here!</strong></h3>
             </div>
             <div class="panel-body">
 
               <!-- Train info entry form -->
-              <form>
+              <form id="train-input">
                 <div class="form-group">
                   <label for="train-name">Train Name</label>
                   <input class="form-control" id="train-name" type="text">
